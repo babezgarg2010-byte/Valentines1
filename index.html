@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine Mode: ON 💘</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{
+      min-height:100vh;
+      overflow:hidden;
+      background: radial-gradient(circle at top,#ff1e56,#ffaccc,#ff0080);
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; text-align:center;
+    }
+
+    /* soft glass card */
+    .wrap{
+      width:min(560px,92vw);
+      border-radius:26px;
+      padding:18px 16px 16px;
+      background:rgba(0,0,0,.18);
+      box-shadow:0 18px 60px rgba(0,0,0,.28);
+      backdrop-filter: blur(10px);
+      position:relative;
+      z-index:5;
+    }
+
+    .topTitle{
+      font-weight:900;
+      font-size:clamp(24px,5vw,34px);
+      letter-spacing:.3px;
+      text-shadow:0 0 18px rgba(255,255,255,.55);
+      animation:glow 2s infinite alternate;
+    }
+    @keyframes glow{
+      from{text-shadow:0 0 10px rgba(255,255,255,.6);}
+      to{text-shadow:0 0 28px rgba(255,0,204,.85);}
+    }
+
+    .subTitle{
+      margin-top:8px;
+      font-size:clamp(14px,3.5vw,18px);
+      opacity:.95;
+      line-height:1.35;
+    }
+
+    .pillRow{
+      margin:12px auto 10px;
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+    }
+    .pill{
+      font-size:12px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.16);
+      border:1px solid rgba(255,255,255,.22);
+      opacity:.95;
+    }
+
+    .progressWrap{
+      width:100%;
+      height:10px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,.18);
+      margin:10px 0 14px;
+    }
+    .progressBar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#00ffcc,#00ff66);
+      transition:width .35s ease;
+      border-radius:999px;
+    }
+
+    .card{
+      padding:10px 6px 6px;
+    }
+
+    .question{
+      font-weight:900;
+      font-size:clamp(18px,4.6vw,24px);
+      text-shadow:0 0 14px rgba(255,255,255,.45);
+      margin:4px 0 12px;
+      min-height: 56px;
+      display:flex; align-items:center; justify-content:center;
+      padding:0 6px;
+    }
+
+    .desc{
+      font-size:13px;
+      opacity:.92;
+      line-height:1.4;
+      margin-bottom:10px;
+      min-height: 34px;
+      padding:0 6px;
+    }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin:10px 0 6px;
+    }
+
+    .btn{
+      border:none;
+      border-radius:999px;
+      cursor:pointer;
+      user-select:none;
+      touch-action: manipulation;
+      padding:14px 18px;
+      font-size:15px;
+      font-weight:900;
+      min-width: 150px;
+      transition: transform .15s ease, filter .15s ease, opacity .15s ease;
+    }
+    .btn:active{transform:scale(.97);}
+    .btn:hover{filter:brightness(1.05);}
+
+    .btnYes{
+      background:linear-gradient(45deg,#00ffcc,#00ff66);
+      color:#061b10;
+      box-shadow:0 0 18px rgba(0,255,153,.75);
+    }
+    .btnSoft{
+      background:linear-gradient(45deg,#ffe0ee,#ffffff);
+      color:#8a003c;
+      box-shadow:0 0 14px rgba(255,255,255,.55);
+    }
+    .btnNo{
+      background:linear-gradient(45deg,#ff0033,#990000);
+      color:#fff;
+      box-shadow:0 0 18px rgba(255,0,51,.35);
+      position:absolute;
+      left:50%;
+      top:10px;
+      transform:translateX(-50%);
+    }
+
+    /* reserved space for NO button to move around (phone-safe) */
+    .noArea{
+      position:relative;
+      width:100%;
+      height:82px;
+      margin-top:6px;
+      display:none;
+    }
+
+    .hint{
+      margin-top:8px;
+      font-size:12px;
+      opacity:.88;
+      min-height: 18px;
+    }
+
+    .result{
+      display:none;
+      margin-top:10px;
+      padding:10px 8px 2px;
+      animation:pop .55s ease;
+    }
+    @keyframes pop{
+      from{transform:scale(.85);opacity:0;}
+      to{transform:scale(1);opacity:1;}
+    }
+
+    .big{
+      font-size:clamp(22px,5.2vw,30px);
+      font-weight:900;
+      margin-bottom:6px;
+    }
+    .small{
+      font-size:14px;
+      opacity:.95;
+      line-height:1.45;
+      margin-bottom:10px;
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:8px;
+    }
+    .tiny{
+      min-width:160px;
+      padding:12px 16px;
+      font-size:14px;
+    }
+
+    .gif{
+      display:none;
+      margin-top:12px;
+    }
+    .gif img{
+      width:min(250px,70vw);
+      border-radius:18px;
+      box-shadow:0 12px 30px rgba(0,0,0,.26);
+    }
+
+    /* Floating hearts (lightweight) */
+    .heart{
+      position:absolute;
+      z-index:1;
+      pointer-events:none;
+      opacity:.85;
+      animation:float 6.5s linear forwards;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,.18));
+    }
+    @keyframes float{
+      0%{transform:translateY(110vh) scale(.8);opacity:0;}
+      15%{opacity:1;}
+      100%{transform:translateY(-12vh) scale(1.25);opacity:0;}
+    }
+
+    /* Kiss pop */
+    .kiss{
+      position:absolute;
+      z-index:6;
+      pointer-events:none;
+      animation:kissPop 900ms ease-out forwards;
+      filter: drop-shadow(0 10px 12px rgba(0,0,0,.25));
+    }
+    @keyframes kissPop{
+      0%{transform:translate(-50%,-50%) scale(.2);opacity:0;}
+      20%{opacity:1;}
+      100%{transform:translate(-50%,-85%) scale(1.85);opacity:0;}
+    }
+
+    /* Confetti */
+    .confetti{
+      position:absolute;
+      z-index:6;
+      pointer-events:none;
+      width:10px; height:10px;
+      background:white;
+      border-radius:2px;
+      opacity:.95;
+      animation:conf 1200ms ease-out forwards;
+    }
+    @keyframes conf{
+      0%{transform:translate(0,0) rotate(0deg);opacity:1;}
+      100%{transform:translate(var(--dx), var(--dy)) rotate(420deg);opacity:0;}
+    }
+
+    /* Typewriter caret */
+    .type{
+      display:inline-block;
+      border-right:2px solid rgba(255,255,255,.9);
+      padding-right:3px;
+      animation: caret .9s steps(1) infinite;
+    }
+    @keyframes caret{50%{border-color:transparent;}}
+
+    @media (max-width:420px){
+      .btn{min-width:140px;}
+      .noArea{height:88px;}
+      .pillRow{gap:8px;}
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrap">
+    <div class="topTitle">Penguin 🐧</div>
+    <div class="subTitle" id="subtitle">I’m entering <b>flirt + concern + romance</b> mode. Don’t panic. 💗</div>
+
+    <div class="pillRow" id="pills">
+      <div class="pill">soft</div>
+      <div class="pill">teasy</div>
+      <div class="pill">protective</div>
+      <div class="pill">obsessed (a little)</div>
+    </div>
+
+    <div class="progressWrap"><div class="progressBar" id="bar"></div></div>
+
+    <div class="card">
+      <div class="question" id="q"></div>
+      <div class="desc" id="d"></div>
+
+      <div class="btnRow" id="choices"></div>
+
+      <div class="noArea" id="noArea">
+        <button class="btn btnNo" id="noBtn">NO 😈</button>
+      </div>
+
+      <div class="hint" id="hint"></div>
+
+      <div class="result" id="result">
+        <div class="big" id="big"></div>
+        <div class="small" id="small"></div>
+
+        <div class="controls">
+          <button class="btn btnSoft tiny" id="musicBtn">Play Raabta 🎶</button>
+          <button class="btn btnYes  tiny" id="replayBtn">Replay 💞</button>
+          <button class="btn btnSoft tiny" id="muteBtn">Mute 🔇</button>
+        </div>
+
+        <div class="gif" id="gif">
+          <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="dance">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPORTANT: Raabta.mp3 must be in SAME folder as Valentines.html -->
+  <audio id="song" preload="auto" loop>
+    <source src="Raabta.mp3" type="audio/mpeg" />
+  </audio>
+
+<script>
+/* ------------------------- CONFIG (edit if you want) ------------------------- */
+const YOUR_NICKNAME = "Penguin";      // shown already, optional
+const THEM_NICKNAME = "you";          // you can change to her nickname if you want
+/* --------------------------------------------------------------------------- */
+
+const steps = [
+  {
+    subtitle: "I’m not here to fight. I’m here to understand you. 🫶",
+    q: "Quick check-in… are you happy with me?",
+    d: "No fake answers. I’d rather fix things than lose you.",
+    hint: "If you say no, I’ll still stay. But I’ll work harder.",
+    showNo: false,
+    options: [
+      {t:"Yes, very 🥺💗", tag:"happy_yes", pts:3},
+      {t:"Sometimes 😶", tag:"happy_mid", pts:1},
+      {t:"Not really 😔", tag:"happy_no", pts:0},
+    ]
+  },
+  {
+    subtitle: "Okay now… I’m going to be slightly shameless. 😌",
+    q: "Do you love me?",
+    d: "Say it properly. Don’t be stingy with the love.",
+    hint: "Try pressing NO. I dare you 😈",
+    showNo: true,
+    options: [
+      {t:"YESSS ❤️🔥", tag:"love_yes", pts:4},
+      {t:"I’m getting there 🙈", tag:"love_mid", pts:2},
+      {t:"No 😐", tag:"love_no", pts:0},
+    ]
+  },
+  {
+    subtitle: "This one decides how much I’m allowed to tease you. 😏",
+    q: "Do you miss me when I’m not around?",
+    d: "Be honest. I miss you like a problem I don’t want to solve.",
+    hint: "If you say ‘nope’, I’ll still flirt. Just saying.",
+    showNo: false,
+    options: [
+      {t:"All the time 🥺", tag:"miss_yes", pts:3},
+      {t:"Sometimes 🙂", tag:"miss_mid", pts:1},
+      {t:"Nope 😶", tag:"miss_no", pts:0},
+    ]
+  },
+  {
+    subtitle: "Serious moment: I care about your mood. Always.",
+    q: "Right now… are you okay? Like truly okay?",
+    d: "If something’s heavy, you don’t have to carry it alone.",
+    hint: "Pick the honest one. I’m listening.",
+    showNo: false,
+    options: [
+      {t:"I’m good 🫶", tag:"ok_good", pts:2},
+      {t:"A bit stressed 😵‍💫", tag:"ok_stress", pts:1},
+      {t:"Not okay 😔", tag:"ok_not", pts:0},
+    ]
+  },
+  {
+    subtitle: "Back to flirting. Because I’m addicted. 💘",
+    q: "Would you choose me again?",
+    d: "Same you. Same me. Same chaos. Still yes?",
+    hint: "Careful. ‘Yes’ makes me extra romantic.",
+    showNo: false,
+    options: [
+      {t:"Every single time 💍", tag:"choose_yes", pts:4},
+      {t:"Yes but don’t get ego 😤❤️", tag:"choose_sassy", pts:3},
+      {t:"I don’t know 🤷‍♀️", tag:"choose_mid", pts:1},
+    ]
+  },
+  {
+    subtitle: "Final boss question. Don’t fumble. 😈💖",
+    q: "Will you be my Valentine?",
+    d: "Say yes and I’ll prove it daily—effort, respect, and maximum romance.",
+    hint: "NO button is just decoration 😉",
+    showNo: true,
+    options: [
+      {t:"YES 💖", tag:"val_yes", pts:6},
+      {t:"Of course, idiot 😭❤️", tag:"val_yes_spicy", pts:6},
+    ]
+  },
+];
+
+let idx = 0;
+let score = 0;
+const answers = [];
+
+/* elements */
+const subtitleEl = document.getElementById("subtitle");
+const qEl = document.getElementById("q");
+const dEl = document.getElementById("d");
+const choicesEl = document.getElementById("choices");
+const hintEl = document.getElementById("hint");
+const barEl = document.getElementById("bar");
+
+const noArea = document.getElementById("noArea");
+const noBtn = document.getElementById("noBtn");
+
+const resultEl = document.getElementById("result");
+const bigEl = document.getElementById("big");
+const smallEl = document.getElementById("small");
+const gifEl = document.getElementById("gif");
+
+const song = document.getElementById("song");
+const musicBtn = document.getElementById("musicBtn");
+const replayBtn = document.getElementById("replayBtn");
+const muteBtn = document.getElementById("muteBtn");
+
+/* typewriter */
+function typeText(el, text){
+  el.innerHTML = "";
+  const span = document.createElement("span");
+  span.className = "type";
+  el.appendChild(span);
+  let i = 0;
+  const timer = setInterval(()=>{
+    span.textContent = text.slice(0, i++);
+    if(i > text.length){
+      clearInterval(timer);
+      span.classList.remove("type");
+      el.textContent = text;
+    }
+  }, 16);
+}
+
+function setProgress(){
+  const p = Math.round((idx / steps.length) * 100);
+  barEl.style.width = p + "%";
+}
+
+function render(){
+  setProgress();
+  const s = steps[idx];
+
+  subtitleEl.innerHTML = s.subtitle;
+  typeText(qEl, s.q);
+  dEl.textContent = s.d;
+  hintEl.textContent = s.hint || "";
+
+  choicesEl.innerHTML = "";
+  s.options.forEach(op=>{
+    const b = document.createElement("button");
+    b.className = "btn " + (op.pts >= 4 ? "btnYes" : "btnSoft");
+    b.textContent = op.t;
+    b.addEventListener("click", ()=> choose(op));
+    choicesEl.appendChild(b);
+  });
+
+  // NO button only on some steps
+  noArea.style.display = s.showNo ? "block" : "none";
+
+  // hide final panel while questions
+  resultEl.style.display = "none";
+  gifEl.style.display = "none";
+}
+
+function choose(op){
+  answers.push(op.tag);
+  score += op.pts;
+
+  burstKisses();
+  burstConfetti();
+
+  idx++;
+  if(idx >= steps.length){
+    finish();
+  }else{
+    render();
+  }
+}
+
+/* phone-safe moving NO button */
+function moveNo(){
+  const pad = 10;
+  const area = noArea.getBoundingClientRect();
+  const btn  = noBtn.getBoundingClientRect();
+
+  const maxX = area.width  - btn.width  - pad;
+  const maxY = area.height - btn.height - pad;
+
+  const x = pad + Math.random() * Math.max(1, maxX);
+  const y = pad + Math.random() * Math.max(1, maxY);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top  = y + "px";
+  noBtn.style.transform = "scale(" + (Math.random()*0.22 + 0.92) + ")";
+}
+
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("pointerdown", (e)=>{ e.preventDefault(); moveNo(); });
+noBtn.addEventListener("click", (e)=>{ e.preventDefault(); moveNo(); });
+
+/* floating hearts background */
+function createHeart(){
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.textContent = (Math.random() > 0.5) ? "💖" : "💘";
+  h.style.left = (Math.random()*100) + "vw";
+  h.style.fontSize = (14 + Math.random()*18) + "px";
+  h.style.animationDuration = (5.2 + Math.random()*3.2) + "s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(), 8200);
+}
+setInterval(createHeart, 420); // not too fast (phone friendly)
+
+/* kiss + confetti bursts */
+function burstKisses(){
+  const count = 10;
+  for(let i=0;i<count;i++){
+    const k = document.createElement("div");
+    k.className = "kiss";
+    k.textContent = (Math.random() > 0.5) ? "💋" : "💕";
+    const x = (window.innerWidth*0.2) + Math.random()*(window.innerWidth*0.6);
+    const y = (window.innerHeight*0.30) + Math.random()*(window.innerHeight*0.35);
+    k.style.left = x + "px";
+    k.style.top  = y + "px";
+    k.style.fontSize = (16 + Math.random()*18) + "px";
+    document.body.appendChild(k);
+    setTimeout(()=>k.remove(), 950);
+  }
+}
+
+function burstConfetti(){
+  const count = 26;
+  for(let i=0;i<count;i++){
+    const c = document.createElement("div");
+    c.className = "confetti";
+    const x = window.innerWidth/2 + (Math.random()*90 - 45);
+    const y = window.innerHeight/2 + (Math.random()*40 - 20);
+    c.style.left = x + "px";
+    c.style.top  = y + "px";
+    c.style.setProperty("--dx", (Math.random()*260 - 130) + "px");
+    c.style.setProperty("--dy", (Math.random()*280 - 130) + "px");
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 1300);
+  }
+}
+
+/* Smooth music fade in (romantic, not blasting) */
+async function playWithFade(){
+  try{
+    song.muted = false;
+    song.volume = 0.0;
+    await song.play();
+    let v = 0.0;
+    const fade = setInterval(()=>{
+      v += 0.04;
+      if(v >= 0.65){
+        song.volume = 0.65;
+        clearInterval(fade);
+      }else{
+        song.volume = v;
+      }
+    }, 90);
+    musicBtn.textContent = "Playing… 💞";
+  }catch(err){
+    // mobile will block until user interaction sometimes; this button IS interaction, so usually fine
+    musicBtn.textContent = "Tap again 🎶";
+  }
+}
+
+/* End screen */
+function finish(){
+  barEl.style.width = "100%";
+  choicesEl.innerHTML = "";
+  noArea.style.display = "none";
+  hintEl.textContent = "";
+
+  const stressed = answers.includes("ok_stress") || answers.includes("ok_not");
+  const loved = answers.includes("love_yes");
+  const happy = answers.includes("happy_yes");
+  const valYes = answers.includes("val_yes") || answers.includes("val_yes_spicy");
+
+  // vibe based on score
+  let vibe = "soft";
+  if(score >= 18) vibe = "obsessed";
+  else if(score >= 12) vibe = "romantic";
+  else vibe = "gentle";
+
+  if(valYes){
+    if(vibe === "obsessed"){
+      bigEl.textContent = "Done. You’re my Valentine. 😭❤️";
+      smallEl.textContent =
+        "I’m not just flirting. I’m serious about you. I’ll keep you safe, heard, and loved — and I’ll still tease you because you’re cute. 💞";
+    }else if(vibe === "romantic"){
+      bigEl.textContent = "Okay… you said YES. 💘";
+      smallEl.textContent =
+        "I’ll be consistent: respect, effort, and soft love. And when you’re tired, I’ll be your calm. When you’re happy, I’ll be your hype. 💗";
+    }else{
+      bigEl.textContent = "Aww. I’m happy. 🫶";
+      smallEl.textContent =
+        "No pressure, only care. I’ll love you gently, and I’ll keep proving it with actions — not just words. ❤️";
+    }
+
+    if(stressed){
+      smallEl.textContent += " Also… if you’re stressed, come here. I’m not leaving you alone with it. 🫂";
+    }
+
+    resultEl.style.display = "block";
+    gifEl.style.display = "block";
+    megaHearts();
+    // start music softly on finish (still user-driven because last click is interaction)
+    playWithFade();
+  } else {
+    bigEl.textContent = "You’re teasing me. 😈";
+    smallEl.textContent =
+      "It’s okay. I’ll still care about you. But I’m re-asking with extra romance: will you be mine? 💗";
+    resultEl.style.display = "block";
+    gifEl.style.display = "block";
+  }
+}
+
+/* extra hearts on finish */
+function megaHearts(){
+  let i=0;
+  const burst = setInterval(()=>{
+    createHeart();
+    if(++i > 26) clearInterval(burst);
+  }, 120);
+}
+
+/* controls */
+musicBtn.addEventListener("click", playWithFade);
+
+muteBtn.addEventListener("click", ()=>{
+  if(song.muted || song.volume === 0){
+    song.muted = false;
+    if(song.paused) playWithFade();
+    else song.volume = 0.65;
+    muteBtn.textContent = "Mute 🔇";
+  }else{
+    song.muted = true;
+    muteBtn.textContent = "Unmute 🔊";
+  }
+});
+
+replayBtn.addEventListener("click", ()=>{
+  idx = 0;
+  score = 0;
+  answers.length = 0;
+
+  song.pause();
+  song.currentTime = 0;
+  song.muted = false;
+  musicBtn.textContent = "Play Raabta 🎶";
+  muteBtn.textContent = "Mute 🔇";
+
+  render();
+  moveNo();
+});
+
+/* init */
+render();
+moveNo();
+</script>
+
+</body>
+</html>
